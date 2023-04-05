@@ -1,90 +1,90 @@
-# 概述
-本项目是在 https://github.com/snailuncle/webpack-autojs 项目上魔改得来，
+# Overview
+This project is a magical modification of the https://github.com/snailuncle/webpack-autojs project.
 
-本项目的目标是做个 [autoxjs](https://github.com/kkevsekk1/AutoX) （新的开源 autojs）项目的开发工具包，即 autox-cli   
-满足工程化（远离刀耕火种）：自动化管理个js类库，自动对源码，编译、混淆、dex加密、打包、部署，让开发人员专心写业务。   
-当然要实现 工程化，你需要有一些nodejs开发基础知识。到目前为止尚未封装出cli和dex加密，但是已经实现了除此之外的所以功能， 
-所以刚开始你会看到很多文件，请不要害怕，只关心下面文档中提到的几个文件即可。   
-项目 直接将编译和的js 转换为 class 转换为 dex 没有实现自动化，   
-(除非一开发的功能要授权之类的，其他情况下没有必要，转换为dex。要收费授权，和autojs设计的初衷和开源协议都是背离的。)   
-下一步将主要解决这个问题。欢迎有兴趣的fork项目一起实现。   
+The goal of this project is to make a development kit for the [autoxjs](https://github.com/kkevsekk1/AutoX) (new open source autojs) project, autox-cli   
+Meet engineering (away from slash-and-burn): automate the management of a js class library, automate the source code, compile, obfuscate, dex encrypt, package, deploy, and let developers focus on writing business.   
+Of course, for engineering, you need to have some basic knowledge of nodejs development. So far, cli and dex encryption have not been encapsulated, but they have been implemented in addition to that. 
+So you will see a lot of files at the beginning, don't be afraid, just care about the few files mentioned in the documentation below.   
+The project directly converts the compiled js to class to dex without automation.   
+(Unless a developed feature to license and so on, in other cases there is no need to convert to dex. to charge a license, and autojs design of the original intention and open source agreement are deviated.)   
+The next step will mainly solve this problem. Welcome interested fork projects to implement together.   
 
-[优酷视频讲解](https://v.youku.com/v_show/id_XNDg2NjA3NTYyMA==.html)  
+[Youku video explanation](https://v.youku.com/v_show/id_XNDg2NjA3NTYyMA==.html)  
 
-## 项目特性清单
-- [x] js源码自动编译，混淆、打包、部署手机、重新运行
-- [x] vscode 自动提示方法、和说明，有一部分待完善，欢迎pull代码
-- [x] 编译后的js 打包成 dex
-- [x] 多项目管理
-- [x] 自动识别ui模块，源文件 是"ui"; 开头则，编译后同样有，源文件没有，编译后也没有
-- [x] 添加多模块编译，一个项目由多个脚本组成，编译后是不同文件，可以相互调用
+## Project feature list
+- [x] js source code auto-compile, obfuscate, package, deploy mobile, re-run
+- [x] vscode auto-tip methods, and instructions, there is a part to be improved, welcome pull code
+- [x] compiled js package into dex
+- [x] Multi-project management
+- [x] auto-identify ui module, source file is "ui"; start then, compile also, source file is not, compile also not
+- [x] Add multi-module compilation, a project consists of multiple scripts, compiled as different files, can call each other
 
-# 使用方法
-1. 你需要安装 nodejs ，安装过程中请注意要 [ 将node添加PATH中 ] 和 安装 npm 这两个选项都要勾选上。(一般的前端工程师都有这个环节)
-2.  安装[vscode](https://code.visualstudio.com/) 并安装 autoxjs开发插件即：[Auto.js-VSCodeExt-Fixed](https://marketplace.visualstudio.com/items?itemName=aaroncheng.auto-js-vsce-fixed)  注意是0.3.11 或以上版本。 （ctr+ shift+p 选择autojs 启动服务）
-3.  安装全局安装 webpack： ``` npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org ```
-4.  [下载本项目](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) 或git clone 项目  ``` git clone https://github.com/kkevsekk1/webpack-autojs.git ``` 
+# How to use
+1. you need to install nodejs, please note that the installation process to [ add node to PATH ] and install npm both options should be checked. (General front-end engineers have this link)
+2. install [vscode](https://code.visualstudio.com/) and install autoxjs development plugin that is: [Auto.js-VSCodeExt-Fixed](https://marketplace.visualstudio.com/items? itemName=aaroncheng.auto-js-vsce-fixed) Note that it is version 0.3.11 or above. (ctr+ shift+p select autojs to start the service)
+3. install global installation of webpack: ``` npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org ```
+4. [download this project](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) or git clone project ``` git clone https://github.com/kkevsekk1/ webpack-autojs.git ``` 5. 
     
-5. cmd 到项目 ， 运行命令，安装依赖
+5. cmd to the project and run the command to install the dependencies
     ```npm install --registry=https://registry.npm.taobao.org ```
 
-6.  到这来基本上可以说 开发环境 就完成了，（你还要一部手安装 autoxjs），下面说 这项目的配置文件和开发的形式。
+6. to this basically you can say that the development environment is complete, (you also have to install autoxjs), the following said the project configuration file and the form of development.
 
-# 项目开发、编译、打包、部署介绍
+# project development, compilation, packaging, deployment introduction
 
-1. work 目录： 这就是我们项目的总目录，即这里面每一个文件夹是一个autoxjs 项目。比如我们 demo,demo1,dy 即为3个项目。 
-2. scriptConfig.js 文件： 我们要如何编译项目即在这个文件中配置，打开文件，有注释的可以按照注释改。
-3. header.txt 无关紧要的文件，里面的内容会原封不动的添加到 编译后的js代码头部
-4. 调整好上面 3处内容 就可用编译了我们的项目了
-5. package.json 这个文件规定 看 第6-9行，有两个命令 start 和 build 分别对应开发环境和生成环境的编译，无需修改。只要知道他们 分别对应 npm run start 和 npm run build 。
-6. 运行 ```npm run start ``` 即开发环境，没每次修改代码，代码会自动编译，并且 scriptConfig.js 中的wath配置为'rerun'或'deploy' 那么代码将自动在手机中运行 或自动将重新编译的项目保存到手机中。
-7. dist目录： 运行上面编译命令（ start或build），就有编译的结果，编译的结果就 dist目录中，这目录下每一个目录代表的就是一个编译后的autoxjs项目.编译后的目录的名称 可以配置一个前缀，以便和编译前的项目区分（当他们都以项目形式保存手中的时候就很有必要）。
-8.``` npm run start ``` 这个
+work directory: This is the general directory of our project, that is, each folder in this is an autoxjs project. For example, we have demo,demo1,dy that is 3 projects. 2. 
+2. scriptConfig.js file: how we want to compile the project that is configured in this file, open the file, there are comments can be changed in accordance with the comments.
+3. header.txt irrelevant file, the contents of which will be added to the compiled js code header as is
+4. adjust the above 3 content will be available to compile our project
+5. package.json This file specifies Look at lines 6-9, there are two commands start and build corresponding to the development environment and build environment compilation respectively, no need to modify. Just know that they correspond to npm run start and npm run build, respectively. 6.
+6. run ``npm run start ``` that is, the development environment, not every time you modify the code, the code will automatically compile, and scriptConfig.js in the wath configuration to 'rerun' or 'deploy' then the code will automatically run in the phone or automatically save the recompiled project to the phone.
+7. dist directory: If you run the above compile command (start or build), you will have the compiled result in the dist directory, and each directory in this directory represents a compiled autoxjs project. The name of the compiled directory can be configured with a prefix to distinguish it from the pre-compiled project (necessary when they are all kept in hand as projects).
+8. ``` npm run start ``` This
 
-# 编译 dex
-1. [使用工具](https://github.com/molysama/auto.pro/wiki/dex) 的来源。我用这个工具来打包，不打算重复造轮子了
-2. [安装jre](https://www.baidu.com/s?ie=UTF-8&wd=jre)   
-3. 安装 auto-cli ``` npm i "@auto.pro/cli" -g ```
-4. 运行编译命令 ``` auto-cli dex ./dist/demo/main.js ``` 
-5. 如果由于愿意写个 webpapck 插件 ，来执行这里几个命令，实现自动化愿意 pull 代码，我没打算对我的代码 编译为dex 再加固，所以没有动力实现这个插件！
+# Compile dex
+1. source for [use tool](https://github.com/molysama/auto.pro/wiki/dex). I use this tool to package and don't plan to build the wheel repeatedly
+2. [Install jre](https://www.baidu.com/s?ie=UTF-8&wd=jre)   
+3. install auto-cli ``` npm i "@auto.pro/cli" -g ```
+4. Run the compile command ``` auto-cli dex . /dist/demo/main.js ``` 
+5. if due to a willingness to write a webpapck plugin to execute a few commands here to automate the willingness to pull code, I have no intention of compiling my code to dex and then reinforcing it, so no incentive to implement this plugin!
 
-# 其他说明1: 
-1. 主要配置文件就一个`scriptConfig.js`
-2. `header.txt` 该文件中的内容会被添加到打包后的文件的头部, 默认为空.
-3. `uiMode` true: ui模式, false 非ui模式
-4.  `base64`webpack打包后是否base64编码
-5.  `base64RandomStrLength`base64编码后, 在字符串前面添加的随机字符长度
-6.  common 这目录是想放在公共通用包，页希望有 要用的符合 闭包规范的autoxjs的lib可以提供，我知道一个叫 [autojs_sdk](https://github.com/kangour/autojs_sdk) 还行，但是这个封装还是不够，我解决还可以有更好的。
-7.  plugin 这目录是自定义 webpack 插件，为编译和自动化服务，一般无需关心。
+# Other notes 1. 
+1. the main configuration file is a `scriptConfig.js` 2.
+2. `header.txt` The contents of this file will be added to the header of the packaged file, which is empty by default. 3.
+3. `uiMode` true: ui mode, false non-ui mode
+4. `base64` whether the webpack is base64 encoded after packaging
+5. `base64RandomStrLength` The length of the random character added in front of the string after base64 encoding
+6. common This directory is intended to be placed in the public generic package, the page hopes to have to use the closed package specification of the autoxjs lib can provide, I know a called [autojs_sdk](https://github.com/kangour/autojs_sdk) okay, but this package is still not enough, I solve can also have Better. 7.
+7. plugin This directory is for custom webpack plugins, for compilation and automation, so you don't need to care.
 
-# 其他说明2:
-1. 目前支持的ui有四种, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `
-2. 如果layoutContent是一个字符串变量, 而不是xml的话, 可以尝试, 将`floaty.window`定义为`floatyWindow`, 其他的` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `也一样:
+# Other notes 2. 1.
+1. There are currently four supported ui's, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `. 2.
+2. If layoutContent is a string variable instead of xml, you can try to define `floaty.window` as `floatyWindow` and the other ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window ` as well: ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window are also the same.
 ```
-let floatyWindow = floaty.window;
-var w = floatyWindow(layoutContent);
+let floatyWindow = floaty.window.
+var w = floatyWindow(layoutContent).
 
 ```
-3. loader文件是`node_modules\webpack-autojs-loader\index.js`
+3. the loader file is `node_modules\webpack-autojs-loader\index.js`
 
-# 其他说明3:
-1. webview打包推荐: `https://github.com/molysama/auto.pro`
-2. require只能用相对路径, webpack才能正常打包
-3. require如果用绝对路径, 请使用global.require代替  如global.require("D:\\module1.js")
+# Other notes 3.
+1. webview packaging recommendation: `https://github.com/molysama/auto.pro` 2.
+2. require can only use relative paths for webpack to package properly
+3. if you use absolute path, please use global.require instead, such as global.require("D:\\module1.js")
 
-# 常见错误
-1. xml中使用了圆括号, 由于loader使用了正则匹配, 圆括号会影响正则, 请使用中文括号
-2. require使用了绝对路径, 请避免使用绝对路径,
-3. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
-4. 若果xml中有list, 请不要省略this, 因为loader正则中会区分xml中的{{}}中是不是带了this, 来进行不同的处理
-5. 变量未定义, 请注意所有变量都要先定义, 再使用; 注意js的变量提升, 导致打包后的运行错误.
-6. 如果不定义就使用, 请在变量前面加上   global.   这7个字符, 可以避免一些变量提升导致的错误
-7. 如果导入jar或者dex, 使用java对象, 建议直接使用对象的完整名字, 比如`var url = new java.net.URL(myUrl);`, 而不是`var url = new URL(myUrl);`
-## js转dex, 可以参考此仓库
+# Common errors
+1. xml use round brackets, because loader use regular match, round brackets will affect regular, please use Chinese brackets
+2. require uses absolute path, please avoid using absolute path. 3.
+3. If require uses absolute path, webpack can't find it. webpack is a tool for computer, not for cell phone, it can't find /sdcard, please use global.require instead.
+4. If there is a list in xml, please don't omit this, because the loader regular will distinguish whether the {{}} in xml has this or not, to handle it differently
+5. variables are not defined, please note that all variables should be defined first, and then used; pay attention to js variable lifting, which can lead to runtime errors after packaging. 6.
+6. if used without definition, please add global. the 7 characters in front of the variable, can avoid some variable lifting errors
+7. If importing jar or dex, using java object, it is recommended to use the full name of the object directly, such as `var url = new java.net.URL(myUrl);`, instead of `var url = new URL(myUrl);`
+## js to dex, you can refer to this repository
 [batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)
 
-## so中执行autojs脚本, 可以参考此仓库
+## execute autojs script in so, see this repository
 [autojsNativeJs](https://github.com/snailuncle/autojsNativeJs)
 
-## 使用webview，等方式构建应用
-[auto.pro](https://github.com/molysama/auto.pro) 可以ts 来编写脚本，构建应用。 如果希望该项目应用 自动部署到手机等功能，请自行配置webpack.config.js即可
+## Build applications using webview, etc.
+[auto.pro](https://github.com/molysama/auto.pro) can ts to write scripts to build the application. If you want the project application to automatically deploy to cell phones and other features, please configure webpack.config.js yourself
